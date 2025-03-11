@@ -1,0 +1,50 @@
+import { FC, useState } from 'react'
+import { UiTitle } from '../../ui/titles'
+import { UiInput } from '../../ui/input'
+import { UiButton } from '../../ui/button'
+import { useNavigate } from 'react-router-dom'
+
+export const RegisterPage: FC = () => {
+   const navigate = useNavigate()
+   const [username, setUsername] = useState('')
+   const [password, setPassword] = useState('')
+   const [confirmPassword, setConfirmPassword] = useState('')
+
+   const handleRegister = async () => {
+      if (password !== confirmPassword) {
+         console.error('Passwords do not match')
+         return
+      }
+      console.log('Register:', { username, password })
+
+      try {
+         const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+         })
+         if (response.ok) {
+            navigate('/login')
+         } else {
+            console.error('Registration failed')
+         }
+      } catch (error) {
+         console.error('Error:', error)
+      }
+   }
+
+   return (
+      <div className="bg-white w-full h-screen flex items-center justify-center">
+         <div className="flex flex-col gap-[10px] bg-blue1 p-8 rounded-2xl max-w-[440px] w-full">
+            <UiTitle className="text-white">Регистрация</UiTitle>
+            <div className="flex flex-col gap-[10px]">
+               <UiInput label="Имя пользователя" placeholder="Введите значение" value={username} onChange={(e) => setUsername(e.target.value)} />
+               <UiInput label="Пароль" placeholder="Введите значение" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+               <UiInput label="Повторите пароль" placeholder="Введите значение" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+               <UiButton label="Зарегистрироваться" onClick={handleRegister} className="mt-2" />
+               <p className="text-white text-[11px] text-center font-extralight">Уже есть аккаунт? <span className="underline cursor-pointer" onClick={() => navigate('/login')}>Войти</span></p>
+            </div>
+         </div>
+      </div>
+   )
+}

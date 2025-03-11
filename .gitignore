@@ -1,0 +1,8 @@
+bonum/node_modules
+bonum/.idea
+
+bonum-back/node_modules
+bonum-back/.idea
+bonum-back/.env
+
+.idea
