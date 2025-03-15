@@ -23,7 +23,6 @@ export const LoginPage: FC = () => {
             login()
             navigate('/home')
          } else {
-            // Handle login error
             console.error('Login failed')
          }
       } catch (error) {

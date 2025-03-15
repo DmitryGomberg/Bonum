@@ -12,20 +12,22 @@ export const RegisterPage: FC = () => {
 
    const handleRegister = async () => {
       if (password !== confirmPassword) {
-         console.error('Passwords do not match')
+         console.error('Пароли не совпадают');
+         alert('Пароли не совпадают!')
          return
       }
-      console.log('Register:', { username, password })
-
+      console.log(username, password)
       try {
-         const response = await fetch('/api/register', {
+         const response = await fetch('http://localhost:8080/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ name: username, password }),
          })
          if (response.ok) {
+            alert('Пользователь зарегистрирован!')
             navigate('/login')
          } else {
+            console.log(response)
             console.error('Registration failed')
          }
       } catch (error) {
