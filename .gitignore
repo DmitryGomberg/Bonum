@@ -6,3 +6,4 @@ bonum-back/.idea
 bonum-back/.env
 
 .idea
+./node_modules

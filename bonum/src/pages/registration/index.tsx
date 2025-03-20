@@ -3,31 +3,37 @@ import { UiTitle } from '../../ui/titles'
 import { UiInput } from '../../ui/input'
 import { UiButton } from '../../ui/button'
 import { useNavigate } from 'react-router-dom'
+import { useNotifications } from '../../context/notifications'
+import { useAuth } from '../../context/auth'
 
 export const RegisterPage: FC = () => {
    const navigate = useNavigate()
-   const [username, setUsername] = useState('')
+   const { login } = useAuth();
+   const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
+   const {showNotification} = useNotifications();
 
    const handleRegister = async () => {
       if (password !== confirmPassword) {
          console.error('Пароли не совпадают');
-         alert('Пароли не совпадают!')
+         showNotification('Пароли не совпадают', 'error');
          return
       }
-      console.log(username, password)
       try {
-         const response = await fetch('http://localhost:8080/api/user', {
+         const response = await fetch('http://localhost:8080/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: username, password }),
+            body: JSON.stringify({ name: email, password }),
          })
          if (response.ok) {
-            alert('Пользователь зарегистрирован!')
+            const data = await response.json();
+            login(data.accessToken);
+            showNotification('Пользователь успешно зарегистрирован', 'success');
             navigate('/login')
          } else {
             console.log(response)
+            showNotification('Ошибка регистрации', 'error');
             console.error('Registration failed')
          }
       } catch (error) {
@@ -40,7 +46,7 @@ export const RegisterPage: FC = () => {
          <div className="flex flex-col gap-[10px] bg-blue1 p-8 rounded-2xl max-w-[440px] w-full">
             <UiTitle className="text-white">Регистрация</UiTitle>
             <div className="flex flex-col gap-[10px]">
-               <UiInput label="Имя пользователя" placeholder="Введите значение" value={username} onChange={(e) => setUsername(e.target.value)} />
+               <UiInput label="Имя пользователя" placeholder="Введите значение" value={email} onChange={(e) => setEmail(e.target.value)} />
                <UiInput label="Пароль" placeholder="Введите значение" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                <UiInput label="Повторите пароль" placeholder="Введите значение" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                <UiButton label="Зарегистрироваться" onClick={handleRegister} className="mt-2" />
