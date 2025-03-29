@@ -6,10 +6,11 @@ import { HomePage } from './pages/home';
 import {NotificationsProvider} from "./context/notifications.tsx";
 import {Notification} from "./components/notification";
 import {AuthProvider, useAuth } from './context/auth.tsx';
+import {AppTemplate} from "./components/templates";
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
    const { isAuthenticated } = useAuth();
-   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+   return isAuthenticated ? <AppTemplate>{children}</AppTemplate> : <Navigate to="/login" />;
 };
 
 const App: React.FC = () => {
@@ -19,20 +20,20 @@ const App: React.FC = () => {
             <Router>
                <Notification />
                <Routes>
-                  <Route path="/registration" element={<RegisterPage />} />
-                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/registration" element={<RegisterPage/>}/>
+                  <Route path="/login" element={<LoginPage/>}/>
+                  <Route path="/" element={<Navigate to="/login"/>}/>
                   <Route
                      path="/home"
                      element={
                         <ProtectedRoute>
-                           <HomePage />
+                           <HomePage/>
                         </ProtectedRoute>
                      }
                   />
-                  <Route path="/" element={<Navigate to="/login" />} />
                </Routes>
-            </Router>
-         </NotificationsProvider>
+         </Router>
+      </NotificationsProvider>
       </AuthProvider>
    );
 };

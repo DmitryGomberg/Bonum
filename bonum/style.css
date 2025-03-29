@@ -5,9 +5,27 @@
 	--color-blue3: #2F70AF;
 	--color-pink: #B9848C;
 	--color-purple: #806491;
-	--color-white: #FAF2FF;
+	/*--color-white: #FAF2FF;*/
+
+	--color-black: #050200;
+	--color-white: #ffffff;
+
+	--color-red: #ef4444;
+
+	--color-brown1: #fcf9f3;
+	--color-brown2 : #f7f1e2;
+	--color-brown3 : #eddebb;
+	--color-brown4: #8a6f1e;
+	--color-brown5 : #7e6007;
 }
 body {
-	font-family: 'Montserrat', 'Arial', sans-serif;
+	font-family: 'Segoe UI', 'Arial', sans-serif;
 }
-
+@layer base {
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--color-black);
+		font-size: 14px;
+		font-weight: 400
+	}
+}

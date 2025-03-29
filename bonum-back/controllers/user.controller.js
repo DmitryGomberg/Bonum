@@ -19,8 +19,8 @@ class UserController {
     }
 
     async updateUser(req, res) {
-        const {id, name, password} = req.body;
-        const user = await db.query('UPDATE users SET name = $1, password = $2 WHERE id = $3 RETURNING *', [name, password, id])
+        const {id, email, password} = req.body;
+        const user = await db.query('UPDATE users SET email = $1, password = $2 WHERE id = $3 RETURNING *', [email, password, id])
         res.json(user.rows[0])
     }
 
@@ -31,14 +31,14 @@ class UserController {
     }
 
     async loginUser(req, res)  {
-        const { name, password } = req.body;
+        const { email, password } = req.body;
 
-        if (typeof name !== 'string' || typeof password !== 'string') {
-            return res.status(400).json({ error: 'Name and password must be strings' });
+        if (typeof email !== 'string' || typeof password !== 'string') {
+            return res.status(400).json({ error: 'Email and password must be strings' });
         }
 
         try {
-            const user = await db.query(`SELECT * FROM users WHERE name = $1`, [name]);
+            const user = await db.query(`SELECT * FROM users WHERE email = $1`, [email]);
             if (user.rows.length === 0) {
                 return res.status(400).json({ error: 'User not found' });
             }
@@ -48,8 +48,8 @@ class UserController {
                 return res.status(400).json({ error: 'Invalid password' });
             }
 
-            const accessToken = jwt.sign({ name }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-            const refreshToken = jwt.sign({ name }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+            const accessToken = jwt.sign({ email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            const refreshToken = jwt.sign({ email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
             refreshTokens.push(refreshToken);
             res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
             res.cookie('refreshToken', refreshToken, { httpOnly: true });
@@ -61,25 +61,28 @@ class UserController {
     }
 
     async registrUser(req, res) {
-        const { name, password } = req.body;
-
-            try {
-                const hashedPassword = await bcrypt.hash(password, 10);
-                console.log('Creating user with name:', name, 'and hashed password:', hashedPassword);
-                const newPerson = await db.query(
-                    `INSERT INTO users (name, password) VALUES ($1, $2) RETURNING *`,
-                    [name, hashedPassword]
-                );
-
-                const accessToken = jwt.sign({ name }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-                const refreshToken = jwt.sign({ name }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
-                refreshTokens.push(refreshToken);
-                res.cookie('refreshToken', refreshToken, { httpOnly: true });
-                res.json({ accessToken });
-            } catch (err) {
-                console.error('Error creating user:', err);
-                res.status(500).json({ error: err.message });
+        const { email, password } = req.body;
+        try {
+            const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+            if (existingUser.rows.length > 0) {
+                return res.status(400).json({ error: 'User with this email already exists' });
             }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const newPerson = await db.query(
+                'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
+                [email, hashedPassword]
+            );
+
+            const accessToken = jwt.sign({ email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            const refreshToken = jwt.sign({ email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+            refreshTokens.push(refreshToken);
+            res.cookie('refreshToken', refreshToken, { httpOnly: true });
+            res.json({ accessToken });
+        } catch (err) {
+            console.error('Error creating user:', err);
+            res.status(500).json({ error: err.message });
+        }
     }
 
     tokenUser(req, res) {
@@ -89,7 +92,7 @@ class UserController {
         }
         jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, user) => {
             if (err) return res.sendStatus(403);
-            const accessToken = jwt.sign({ name: user.name }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            const accessToken = jwt.sign({ email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
             res.json({ accessToken });
         });
     }
