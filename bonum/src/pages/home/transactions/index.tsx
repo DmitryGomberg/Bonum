@@ -9,9 +9,9 @@ export const HomeTransactions: FC = () => {
          <UiSubtitle>Последние транзакции</UiSubtitle>
          <UiLink>Показать все</UiLink>
       </div>
-       <div className={'border border-brown3 p-5 rounded-xl flex flex-col gap-[5px]'}>
+       <div className={'border border-brown3 p-8 rounded-xl flex flex-col gap-[5px]'}>
             <p className={'text-[14px] text-black text-center w-full'}>Транзакции не найдены</p>
-            <UiLink className={'text-center'}>Создать первую транзакцию</UiLink>
+            <UiLink className={'text-center'} goto={'/createTransaction'}>Создать первую транзакцию</UiLink>
        </div>
     </div>
   )

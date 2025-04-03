@@ -8,11 +8,11 @@ type IAppTemplateProps = {
 
 export const AppTemplate: FC<IAppTemplateProps> = (props) => {
   return (
-    <div className={'flex w-full h-screen'}>
+    <div className={'flex w-full min-h-screen'}>
        <Sidebar />
-       <div className={'w-full'}>
+       <div className={'w-full flex flex-col'}>
           <Header />
-          <div className={'px-4 py-4 bg-brown1'}>
+          <div className={'px-4 py-4 bg-brown1 grow-1'}>
              <div className={'max-w-[1280px] mx-auto'}>
                {props.children}
              </div>

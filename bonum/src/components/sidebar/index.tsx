@@ -1,13 +1,15 @@
 import { FC } from 'react'
 import logo from '../../assets/images/logo.svg'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {ChecklistOutlined, HomeOutlined,
    MailOutline, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined} from "@mui/icons-material";
 
 export const Sidebar: FC = () => {
+   const navigate = useNavigate();
+
   return (
-    <div className={'min-w-[255px] border-r border-brown3 h-full flex flex-col'}>
-       <div className={'h-[60px] flex items-center justify-center border-b border-brown3 gap-[5px] text-black font-bold text-[20px]'}>
+    <div className={'min-w-[255px] border-r border-brown3 h-screen flex flex-col sticky top-0'}>
+       <div className={'h-[60px] flex items-center justify-center border-b border-brown3 gap-[5px] text-black font-bold text-[20px] cursor-pointer'} onClick={()=>navigate('/home')}>
           <img src={logo} alt="logo" className={'h-[20px]'}/>
           Bonum
        </div>
@@ -26,10 +28,10 @@ export const Sidebar: FC = () => {
           </ul>
        </div>
        <div className={'p-3 mt-auto border-t border-brown3 flex items-center gap-[10px]'}>
-          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>DP</div>
+          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>IM</div>
           <div>
-             <p className={'font-medium'}>Иван Сминов</p>
-             <p className={'text-[12px]'}>dpgomberg</p>
+             <p className={'font-medium'}>Игорь Матюх</p>
+             <p className={'text-[12px]'}>igmat</p>
           </div>
        </div>
     </div>

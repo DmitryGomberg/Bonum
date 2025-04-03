@@ -7,6 +7,7 @@ import {NotificationsProvider} from "./context/notifications.tsx";
 import {Notification} from "./components/notification";
 import {AuthProvider, useAuth } from './context/auth.tsx';
 import {AppTemplate} from "./components/templates";
+import {AddTransactionPage} from "./pages/addTransaction";
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
    const { isAuthenticated } = useAuth();
@@ -28,6 +29,14 @@ const App: React.FC = () => {
                      element={
                         <ProtectedRoute>
                            <HomePage/>
+                        </ProtectedRoute>
+                     }
+                  />
+                  <Route
+                     path="/createTransaction"
+                     element={
+                        <ProtectedRoute>
+                           <AddTransactionPage />
                         </ProtectedRoute>
                      }
                   />
