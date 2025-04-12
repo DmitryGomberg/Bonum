@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useNotifications } from '../../context/notifications'
 import { useAuth } from '../../context/auth'
 import logo from '../../assets/images/logo.svg'
+import { UiInputPassword } from '../../ui/inputPassword'
 
 export const RegisterPage: FC = () => {
    const navigate = useNavigate()
@@ -78,8 +79,8 @@ export const RegisterPage: FC = () => {
             </div>
             <div className="flex flex-col gap-[16px]">
                <UiInput label="Email" type={'email'} placeholder="Введите значение" required value={email} onChange={(e) => setEmail(e.target.value)} />
-               <UiInput label="Пароль" placeholder="Введите значение" required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-               <UiInput label="Повторите пароль" required placeholder="Введите значение" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+               <UiInputPassword label="Пароль" placeholder="Введите значение" required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+               <UiInputPassword label="Повторите пароль" required placeholder="Введите значение" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                {error && <div className={"text-red text-center"}>{error}</div>}
                <UiButton label="Зарегистрироваться" onClick={handleRegister} className="mt-2" />
                <p className="text-black text-[14px] text-center font-normal">Уже есть аккаунт? <span className="underline underline-offset-4 cursor-pointer text-brown4 font-medium" onClick={() => navigate('/login')}>Войти</span></p>
