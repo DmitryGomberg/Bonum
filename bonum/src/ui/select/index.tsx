@@ -41,7 +41,7 @@ export const UiSelect: FC<IUiSelectProps> = (props) => {
            </button>
            {active &&
                <div
-                   className={'z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md'}>
+                   className={'z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg'}>
                   {
                      props.values.map((elem) => {
                         return <button onClick={() => {

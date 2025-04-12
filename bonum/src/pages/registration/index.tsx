@@ -77,7 +77,7 @@ export const RegisterPage: FC = () => {
                <p className="text-black text-[14px]">Создайте учетную запись для доступа к системе</p>
             </div>
             <div className="flex flex-col gap-[16px]">
-               <UiInput label="Email" placeholder="Введите значение" required value={email} onChange={(e) => setEmail(e.target.value)} />
+               <UiInput label="Email" type={'email'} placeholder="Введите значение" required value={email} onChange={(e) => setEmail(e.target.value)} />
                <UiInput label="Пароль" placeholder="Введите значение" required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                <UiInput label="Повторите пароль" required placeholder="Введите значение" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                {error && <div className={"text-red text-center"}>{error}</div>}

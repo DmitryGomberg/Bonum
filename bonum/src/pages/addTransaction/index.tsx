@@ -1,10 +1,10 @@
 import { FC, useState } from 'react'
-import {UiTitle} from "../../ui/titles/title";
 import {UiInput} from "../../ui/input";
 import {UiSelect} from "../../ui/select";
 import {UiButton} from "../../ui/button";
 import {UiTextarea} from "../../ui/textarea";
 import {UiTabs} from "../../ui/tabs";
+import {UiTitle} from "../../ui/titles/title";
 
 export const AddTransactionPage: FC = () => {
    const [sum, setSum] = useState<number>(0)

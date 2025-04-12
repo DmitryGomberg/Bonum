@@ -58,7 +58,7 @@ export const LoginPage: FC = () => {
                <p className="text-black text-[14px]">Введите свои учетные данные для доступа к системе</p>
             </div>
             <div className="flex flex-col gap-[16px]">
-               <UiInput label="Email" placeholder="Введите значение" required value={email}
+               <UiInput label="Email" type={'email'} placeholder="Введите значение" required value={email}
                         onChange={(e) => setEmail(e.target.value)}/>
                <UiInput label="Пароль" placeholder="Введите значение" required type="password" value={password}
                         onChange={(e) => setPassword(e.target.value)}/>

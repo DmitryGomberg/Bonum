@@ -24,7 +24,7 @@ export const NotificationsProvider: FC<{children: ReactNode}> = ({children}) => 
       setNotifications([...notifications, { id, message: msg, type }]);
       setTimeout(() => {
          setNotifications(notifications => notifications.filter(notification => notification.id !== id));
-      }, 5000000);
+      }, 5000);
    };
 
    const closeNotification = (id: number) => {
