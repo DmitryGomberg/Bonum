@@ -1,60 +1,120 @@
-import { ArrowDropDown } from '@mui/icons-material';
-import {FC, useEffect, useRef, useState} from 'react'
+import React, { useState, useEffect, useRef } from 'react';
+import {ArrowDropDown} from "@mui/icons-material";
 
-type IUiSelectProps = {
-   values: { id: number; label: string }[];
-   label?: string;
-   error?: boolean;
-   required?: boolean;
+interface Option {
+   id: number;
+   label: string;
 }
 
-export const UiSelect: FC<IUiSelectProps> = (props) => {
-   const [active, setActive] = useState<boolean>(false)
-   const [current, setCurrent] = useState<{ id: number; label: string }>({ id: 0, label: 'Укажите вариант' })
-   const ref = useRef<HTMLDivElement>(null);
+interface SelectProps {
+   options: Option[];
+   placeholder?: string;
+   onChange: (selected: Option | null) => void;
+   className?: string;
+   label?: string;
+   error?: string;
+   required?: boolean;
+   defaultId?: number;
+}
 
+export const UiSelect: React.FC<SelectProps> = (props) => {
+   const [isOpen, setIsOpen] = useState(false);
+   const [selectedOption, setSelectedOption] = useState<Option | null>(() => {
+      if (props.defaultId !== undefined) {
+         return props.options.find((option) => option.id === props.defaultId) || null;
+      }
+      return null;
+   });
+   const selectRef = useRef<HTMLDivElement>(null);
+
+   // Закрытие при клике вне компонента
    useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-         if (ref.current && !ref.current.contains(event.target as Node)) {
-            setActive(false);
+         if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
          }
       };
-
       document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-         document.removeEventListener('mousedown', handleClickOutside);
-      };
-   }, [ref]);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+   }, []);
 
-  return (
-     <div className={'w-full flex flex-col gap-[8px]'}>
-        {props.label && <label
-            className={`text-black text-[14px] font-medium text-[12px] ${props.error ? 'text-red' : ''}`}>{props.label}{props.required ?
-           <span className={'text-red'}>*</span> : ''}</label>}
-        <div ref={ref} className={'relative'}>
-           <button onClick={() => {
-              setActive(!active)
-           }}
-                className={'outline-brown4 select-none flex items-center gap-[15px] justify-between cursor-pointer bg-brown1 border border-brown3 rounded-md px-[12px] py-[8px] text-[14px] text-black font-normal w-full'}>
-              {current.label}
-              <span className={`${active ? 'rotate-[180deg]' : ''} transition`}><ArrowDropDown/></span>
-           </button>
-           {active &&
-               <div
-                   className={'z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg'}>
-                  {
-                     props.values.map((elem) => {
-                        return <button onClick={() => {
-                           setCurrent(elem)
-                           setActive(false)
-                        }} key={elem.id}
-                                    className={'outline-brown4 z-20 cursor-pointer py-1 hover:bg-brown2 transition px-[12px] py-[8px] text-left'}>{elem.label}</button>
-                     })
-                  }
-               </div>
-           }
-        </div>
-     </div>
+   // Обновление выбранной опции, если defaultId или options изменились
+   useEffect(() => {
+      if (props.defaultId !== undefined) {
+         const newSelected = props.options.find((option) => option.id === props.defaultId) || null;
+         setSelectedOption(newSelected);
+      }
+   }, [props.defaultId, props.options]);
 
-  )
-}
+   const handleOptionClick = (option: Option) => {
+      setSelectedOption(option);
+      props.onChange(option);
+      setIsOpen(false);
+   };
+
+   return (
+      <div ref={selectRef} className={`w-full flex flex-col gap-[8px] ${props.className}`}>
+         {props.label && <label
+             className={`text-black text-[14px] font-medium text-[12px] ${props.error ? 'text-red' : ''}`}>{props.label}{props.required ?
+            <span className={'text-red'}>*</span> : ''}</label>
+         }
+         <div className={'relative'}>
+            <div
+               className="outline-brown4 select-none flex items-center gap-[15px] justify-between cursor-pointer bg-brown1 border border-brown3 rounded-md px-[12px] py-[8px] text-[14px] text-black font-normal w-full"
+               onClick={() => setIsOpen(!isOpen)}
+            >
+              <div className={`flex w-full item-center justify-between text-black`}>
+                {selectedOption ? selectedOption.label : props.placeholder}
+                <span className={`${isOpen ? 'rotate-[180deg]' : ''} transition`}><ArrowDropDown/></span>
+              </div>
+            </div>
+            {isOpen && (
+               <ul className="z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg">
+                  {props.options.map((option) => (
+                     <li
+                        key={option.id}
+                        className="outline-brown4 z-20 cursor-pointer py-1 hover:bg-brown2 transition px-[12px] py-[8px] text-left"
+                        onClick={() => handleOptionClick(option)}
+                     >
+                        {option.label}
+                     </li>
+                  ))}
+               </ul>
+            )}
+         </div>
+      </div>
+   );
+};
+
+
+  // return (
+  //    <div className={'w-full flex flex-col gap-[8px]'}>
+  //       {props.label && <label
+  //           className={`text-black text-[14px] font-medium text-[12px] ${props.error ? 'text-red' : ''}`}>{props.label}{props.required ?
+  //          <span className={'text-red'}>*</span> : ''}</label>}
+  //       <div ref={ref} className={'relative'}>
+  //          <button onClick={() => {
+  //             setActive(!active)
+  //          }}
+  //               className={'outline-brown4 select-none flex items-center gap-[15px] justify-between cursor-pointer bg-brown1 border border-brown3 rounded-md px-[12px] py-[8px] text-[14px] text-black font-normal w-full'}>
+  //             {current.label}
+  //             <span className={`${active ? 'rotate-[180deg]' : ''} transition`}><ArrowDropDown/></span>
+  //          </button>
+  //          {active &&
+  //              <div
+  //                  className={'z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg'}>
+  //                 {
+  //                    props.values.map((elem) => {
+  //                       return <button onClick={() => {
+  //                          setCurrent(elem)
+  //                          setActive(false)
+  //                          props.onChange(elem)
+  //                       }} key={elem.id}
+  //                                   className={'outline-brown4 z-20 cursor-pointer py-1 hover:bg-brown2 transition px-[12px] py-[8px] text-left'}>{elem.label}</button>
+  //                    })
+  //                 }
+  //              </div>
+  //          }
+  //       </div>
+  //    </div>
+  // )

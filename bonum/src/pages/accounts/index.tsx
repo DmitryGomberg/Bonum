@@ -1,14 +1,10 @@
 import {FC, useEffect, useState} from 'react'
 import {UiTitle} from "../../ui/titles/title";
-import {UiButton} from "../../ui/button";
-import {Add} from "@mui/icons-material";
 import {AccountPageItem} from "./item";
 import {UiSkeleton} from "../../ui/skeleton";
-import {ModalCreateAccount} from "../../components/modals/createAccount";
 
 export const AccountsPage: FC = () => {
    const [dollarRate, setDollarRate] = useState<number | undefined>()
-   const [modalActive, setModalActive] = useState<boolean>(false);
 
    const getRate = async () => {
       try {
@@ -21,7 +17,7 @@ export const AccountsPage: FC = () => {
             console.log(data)
             setDollarRate(data.Cur_OfficialRate)
          } else {
-            console.error('Failed to get currency USD to BYN');
+            console.error('Failed to get currency.tsx USD to BYN');
          }
       } catch (error) {
          console.error('Error:', error);
@@ -37,9 +33,6 @@ export const AccountsPage: FC = () => {
         <div className={'max-w-[800px] mx-auto flex flex-col gap-[20px]'}>
            <div className={'flex items-center justify-between'}>
               <UiTitle>Счета</UiTitle>
-              <UiButton label={'Добавить счет'} contentRight={<Add/>} onClick={() => {
-                 setModalActive(true)
-              }}/>
            </div>
            <div className={'flex flex-col gap-[10px]'}>
               <AccountPageItem name={'Наличные'} amount={150.32} currency={'BYN'}/>
@@ -55,7 +48,6 @@ export const AccountsPage: FC = () => {
               <span className={'text-[12px] text-gray-500 flex items-center gap-[5px]'}>по курсу 1 USD = {dollarRate ? dollarRate : <UiSkeleton width={'37px'} height={'13px'} />} BYN</span>
            </div>
         </div>
-        <ModalCreateAccount active={modalActive} onClose={()=> setModalActive(false)} />
      </div>
   )
 }

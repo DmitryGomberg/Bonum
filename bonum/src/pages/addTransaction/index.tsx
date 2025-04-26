@@ -10,11 +10,14 @@ export const AddTransactionPage: FC = () => {
    const [sum, setSum] = useState<number>(0)
    const [description, setDescription] = useState<string>('')
    const [date, setDate] = useState<string>('')
+   const [type, setType] = useState<number>();
+
+   console.log(type)
 
   return (
     <div className={'flex flex-col items-center gap-[20px] max-w-[700px] mx-auto'}>
        <UiTitle>Добавить новую транзакцию</UiTitle>
-       <UiTabs values={[{id:1, label:'Расход'}, {id:2, label:'Доход'}, {id:3, label:'Перевод'}]} />
+       <UiTabs values={[{id:1, label:'Расход'}, {id:2, label:'Доход'}, {id:3, label:'Перевод'}]} onClick={(e: number)=> setType(e)} />
        <div className={'bg-white p-5 flex flex-col gap-[20px] w-full border border-brown3 rounded-xl'}>
           <div className={'flex gap-[20px]'}>
              <UiInput label={'Укажите сумму'} placeholder={'Введите сумму'} type={'number'} value={sum.toString()}

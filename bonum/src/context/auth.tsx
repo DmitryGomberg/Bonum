@@ -3,11 +3,12 @@ import React, {createContext, ReactNode, useContext, useEffect, useState} from "
 interface AuthContextType {
    isAuthenticated: boolean;
    accessToken: string | null;
-   login: (token: string) => void;
+   login: () => void;
    logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
+
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -21,18 +22,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
    useEffect(() => {
       const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='));
+      console.log(document.cookie.split('; '))
       if (token) {
-         console.log('Token is present:', token.split('=')[1]);
+         console.log('Token is present:', token);
       } else {
          console.log('Token is not present');
       }
    }, []);
 
-   const login = (token: string) => {
-      setIsAuthenticated(true);
-      setAccessToken(token);
-      document.cookie = `accessToken=${token}; path=/;`;
+   const login = () => {
+      const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='));
+      if (token) {
+         const accessToken = token.split('=')[1];
+         if (accessToken) {
+            setIsAuthenticated(true);
+            setAccessToken(accessToken);
+         } else {
+            console.error('Access token value is empty');
+         }
+      } else {
+         console.error('Access token not found in cookies');
+      }
    };
+
+   useEffect(() => {
+      console.log('Cookies:', document.cookie);
+   }, []);
 
    const logout = () => {
       setIsAuthenticated(false);

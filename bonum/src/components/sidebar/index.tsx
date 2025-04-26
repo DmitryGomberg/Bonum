@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import logo from '../../assets/images/logo.svg'
 import {Link, useNavigate} from "react-router-dom";
-import { ChecklistOutlined, HomeOutlined,
-   MailOutline, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined } from "@mui/icons-material";
+import {
+   ChecklistOutlined, MailOutline, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined
+} from "@mui/icons-material";
 
 export const Sidebar: FC = () => {
    const navigate = useNavigate();
@@ -15,8 +16,7 @@ export const Sidebar: FC = () => {
        </div>
        <div className={'p-3'}>
           <ul>
-             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><SpaceDashboardOutlined />Панель управления</Link></li>
-             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><HomeOutlined />Книга</Link></li>
+             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/home"} className={'flex gap-[10px] w-full p-2'}><SpaceDashboardOutlined />Панель управления</Link></li>
              <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/accounts"} className={'flex gap-[10px] w-full p-2'}><ChecklistOutlined />Счета</Link></li>
              <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><ReceiptOutlined />Транзакции</Link></li>
              <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><MailOutline />Отчеты</Link></li>
@@ -24,7 +24,7 @@ export const Sidebar: FC = () => {
        </div>
        <div className={'p-3 border-t border-brown3'}>
           <ul>
-             <li className={'p-2 flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px]'}><SettingsOutlined />Настройки</Link></li>
+             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/settings"} className={'p-2 flex gap-[10px] w-full'}><SettingsOutlined />Настройки</Link></li>
           </ul>
        </div>
        <div className={'p-3 mt-auto border-t border-brown3 flex items-center gap-[10px]'}>

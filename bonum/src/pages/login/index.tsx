@@ -23,11 +23,11 @@ export const LoginPage: FC = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
+            credentials: 'include',
          });
          if (response.ok) {
-            const data = await response.json();
             showNotification('Успешный вход', 'success');
-            login(data.accessToken);
+            login();
             navigate('/home');
          } else {
             showNotification('Неверные email или пароль', 'error');

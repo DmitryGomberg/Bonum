@@ -40,7 +40,7 @@ class UserController {
         try {
             const user = await db.query(`SELECT * FROM users WHERE email = $1`, [email]);
             if (user.rows.length === 0) {
-                return res.status(400).json({ error: 'User not found' });
+                return res.status(400).json({ error: 'User not cd found' });
             }
 
             const validPassword = await bcrypt.compare(password, user.rows[0].password);
@@ -48,10 +48,12 @@ class UserController {
                 return res.status(400).json({ error: 'Invalid password' });
             }
 
-            const accessToken = jwt.sign({ email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-            const refreshToken = jwt.sign({ email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+            const accessToken = jwt.sign({ email, id: user.rows[0].id }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            console.log('Сгенерированный токен:', accessToken);
+            const refreshToken = jwt.sign({ email, id: user.rows[0].id }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+
             refreshTokens.push(refreshToken);
-            res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
+            res.cookie('accessToken', accessToken, { httpOnly: false, secure: false, sameSite: 'Strict', path: '/' });
             res.cookie('refreshToken', refreshToken, { httpOnly: true });
             res.json({ message: 'Login successful' });
         } catch (err) {

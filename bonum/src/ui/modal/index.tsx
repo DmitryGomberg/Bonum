@@ -6,6 +6,7 @@ type IUiModalProps = {
    children: ReactNode;
    title: string;
    onClose(): void;
+   className?: string;
 }
 
 export const UiModal: FC<IUiModalProps> = (props) => {
@@ -39,7 +40,7 @@ export const UiModal: FC<IUiModalProps> = (props) => {
             {props.title}
             <Close onClick={props.onClose} className={'cursor-pointer'} />
          </div>
-          <div className={'p-3 px-5 bg-white rounded-b-2xl flex flex-col gap-[15px]'}>
+          <div className={`p-3 px-5 bg-white rounded-b-2xl flex flex-col gap-[15px] ${props.className}`}>
              {props.children}
           </div>
        </div>

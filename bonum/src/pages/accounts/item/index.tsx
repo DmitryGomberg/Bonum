@@ -1,5 +1,4 @@
-import { FC, useState } from 'react'
-import {ModalEditAccount} from "../../../components/modals/editAccount";
+import { FC } from 'react'
 
 type IAccountPageItemProps = {
    name: string
@@ -8,20 +7,19 @@ type IAccountPageItemProps = {
 }
 
 export const AccountPageItem: FC<IAccountPageItemProps> = (props) => {
-   const [activeModal, setActiveModal] = useState(false);
-
   return (
      <>
         <div className={'bg-white border border-brown3 rounded-xl px-4 py-3 flex items-center'}>
-           <p className={'font-bold max-w-[300px] w-full'}>
+           <p className={'font-bold max-w-[60%] w-full'}>
               {props.name}
            </p>
-           <div className={'mr-auto'}>
-              {props.amount + ' ' + props.currency}
+           <div className={'whitespace-nowrap max-w-[10%] w-full text-center font-bold'}>
+              {props.amount}
            </div>
-           <button className={'text-brown5 underline text-[14px] cursor-pointer'} onClick={()=> setActiveModal(true)}>Редактировать</button>
+           <div className={'whitespace-nowrap ml-auto'}>
+              {props.currency}
+           </div>
         </div>
-        <ModalEditAccount active={activeModal} onClose={()=> setActiveModal(false)} />
      </>
   )
 }
