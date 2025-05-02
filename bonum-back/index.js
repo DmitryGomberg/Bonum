@@ -4,6 +4,7 @@ const cors = require('cors');
 const userRouter = require('./routes/user.controller');
 const accountRouter = require('./routes/accounts.controller');
 const currencyRouter = require('./routes/currency.controller');
+const categoriesRouter = require('./routes/categories.controller');
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api', userRouter);
 app.use('/api', accountRouter);
 app.use('/api', currencyRouter);
+app.use('/api', categoriesRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

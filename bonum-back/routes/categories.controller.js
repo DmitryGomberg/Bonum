@@ -1,9 +1,17 @@
-const Router = require('express')
-const router = new Router()
+const Router = require('express');
+const router = new Router();
+const categoriesController = require('../controllers/categories.controller');
 
+// создание категории
+router.post('/create', categoriesController.createCategory);
 
-// router.post('/register', userController.registrUser);
+// редактирование категории
+router.put('/edit', categoriesController.editCategory);
 
-// модуль для создания категории
+// удаление категории
+router.delete('/delete', categoriesController.deleteCategory);
 
-module.exports = router
+// получение категории
+router.get('/get', categoriesController.getCategory);
+
+module.exports = router;
