@@ -3,15 +3,19 @@ const router = new Router();
 const categoriesController = require('../controllers/categories.controller');
 
 // создание категории
-router.post('/create', categoriesController.createCategory);
+router.post('/createCategory', categoriesController.createCategory);
 
 // редактирование категории
-router.put('/edit', categoriesController.editCategory);
+router.put('/editCategory', categoriesController.editCategory);
 
 // удаление категории
-router.delete('/delete', categoriesController.deleteCategory);
+router.delete('/deleteCategory', categoriesController.deleteCategory);
 
 // получение категории
-router.get('/get', categoriesController.getCategory);
+router.get('/getCategory', categoriesController.getCategory);
+
+// получение категорий пользователя
+router.get('/getAllCategories', categoriesController.getAllCategories);
+
 
 module.exports = router;

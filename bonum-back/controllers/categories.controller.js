@@ -93,6 +93,36 @@ class CategoriesController {
             res.status(500).json({ message: 'Error fetching category' });
         }
     }
+    async getAllCategories(req, res) {
+        const { user_id } = req.query;
+
+        if (!user_id) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        try {
+            const categories = await db.query(
+                `WITH RECURSIVE category_hierarchy AS (
+                SELECT id, name, icon, parent_id, 0 AS level
+                FROM categories
+                WHERE parent_id IS NULL AND user_id = $1
+                UNION ALL
+                SELECT c.id, c.name, c.icon, c.parent_id, ch.level + 1
+                FROM categories c
+                INNER JOIN category_hierarchy ch ON c.parent_id = ch.id
+                WHERE c.user_id = $1
+            )
+            SELECT * FROM category_hierarchy
+            ORDER BY level, parent_id NULLS FIRST, id`,
+                [user_id]
+            );
+
+            res.status(200).json(categories.rows);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error fetching categories' });
+        }
+    }
 }
 
 module.exports = new CategoriesController();

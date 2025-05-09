@@ -10,6 +10,7 @@ import {AppTemplate} from "./components/templates";
 import {AddTransactionPage} from "./pages/addTransaction";
 import {AccountsPage} from "./pages/accounts";
 import {SettingsPage} from "./pages/settings";
+import {UserProvider} from "./context/user.tsx";
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
    const { isAuthenticated } = useAuth();
@@ -20,47 +21,49 @@ const App: React.FC = () => {
    return (
       <AuthProvider>
          <NotificationsProvider>
-            <Router>
-               <Notification />
-               <Routes>
-                  <Route path="/registration" element={<RegisterPage/>}/>
-                  <Route path="/login" element={<LoginPage/>}/>
-                  <Route path="/" element={<Navigate to="/login"/>}/>
-                  <Route
-                     path="/home"
-                     element={
-                        <ProtectedRoute>
-                           <HomePage/>
-                        </ProtectedRoute>
-                     }
-                  />
-                  <Route
-                     path="/createTransaction"
-                     element={
-                        <ProtectedRoute>
-                           <AddTransactionPage />
-                        </ProtectedRoute>
-                     }
-                  />
-                  <Route
-                     path="/accounts"
-                     element={
-                        <ProtectedRoute>
-                           <AccountsPage />
-                        </ProtectedRoute>
-                     }
-                  />
-                  <Route
-                     path="/settings"
-                     element={
-                        <ProtectedRoute>
-                           <SettingsPage />
-                        </ProtectedRoute>
-                     }
-                  />
-               </Routes>
-         </Router>
-      </NotificationsProvider>
+            <UserProvider>
+               <Router>
+                  <Notification />
+                  <Routes>
+                     <Route path="/registration" element={<RegisterPage/>}/>
+                     <Route path="/login" element={<LoginPage/>}/>
+                     <Route path="/" element={<Navigate to="/login"/>}/>
+                     <Route
+                        path="/home"
+                        element={
+                           <ProtectedRoute>
+                              <HomePage/>
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="/createTransaction"
+                        element={
+                           <ProtectedRoute>
+                              <AddTransactionPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="/accounts"
+                        element={
+                           <ProtectedRoute>
+                              <AccountsPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="/settings"
+                        element={
+                           <ProtectedRoute>
+                              <SettingsPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                  </Routes>
+               </Router>
+            </UserProvider>
+         </NotificationsProvider>
       </AuthProvider>
    );
 };

@@ -40,16 +40,12 @@ export const SettingsAccounts: FC = () => {
 
          const data = await response.json();
 
-         console.log(data)
-
          const transformedAccounts: Account[] = data.map((account: ServerAccount) => ({
             id: account.id,
             name: account.name,
             value: account.value,
             currency: account.currency_id,
          }));
-
-         console.log(transformedAccounts)
 
          setAccounts(transformedAccounts);
 
@@ -68,18 +64,23 @@ export const SettingsAccounts: FC = () => {
       fetchAccounts();
    }, [userId, activeModal]);
 
-   if (loading) return <div>Loading...</div>;
+   if (loading) return <div className={'max-w-[800px] mx-auto w-full'}>Loading...</div>;
    if (error) return <div>Error: {error}</div>;
    
   return (
-     <>
-       <div className={'max-w-[800px] mx-auto w-full flex flex-col gap-[10px]'}>
-          {accounts.map((account) => (
-             <SettingsAccount value={account.value} currency={account.currency} name={account.name} id={account.id} onUpdate={fetchAccounts} />
-          ))}
-          <UiButton label={'Добавить'} contentLeft={<Add />} onClick={()=>setActiveModal(true)} className={'self-end'} />
-       </div>
-        <ModalCreateAccount active={activeModal} onClose={()=>setActiveModal(false)} />
-     </>
+     <div className={'flex flex-col gap-3'}>
+        <h2 className={'font-medium text-[18px] text-center'}>
+           Счета пользователя
+        </h2>
+        <div className={'max-w-[800px] mx-auto w-full flex flex-col gap-[10px]'}>
+           {accounts.map((account) => (
+              <SettingsAccount value={account.value} currency={account.currency} name={account.name} id={account.id}
+                               onUpdate={fetchAccounts}/>
+           ))}
+           <UiButton label={'Добавить'} contentLeft={<Add/>} onClick={() => setActiveModal(true)}
+                     className={'self-end'}/>
+        </div>
+        <ModalCreateAccount active={activeModal} onClose={() => setActiveModal(false)}/>
+     </div>
   )
 }

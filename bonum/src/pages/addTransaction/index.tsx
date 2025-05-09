@@ -6,13 +6,17 @@ import {UiTextarea} from "../../ui/textarea";
 import {UiTabs} from "../../ui/tabs";
 import {UiTitle} from "../../ui/titles/title";
 
+interface Option {
+   id: number;
+   label: string;
+}
+
 export const AddTransactionPage: FC = () => {
    const [sum, setSum] = useState<number>(0)
    const [description, setDescription] = useState<string>('')
    const [date, setDate] = useState<string>('')
    const [type, setType] = useState<number>();
 
-   console.log(type)
 
   return (
     <div className={'flex flex-col items-center gap-[20px] max-w-[700px] mx-auto'}>
@@ -28,10 +32,14 @@ export const AddTransactionPage: FC = () => {
                       onChange={(e) => setDate(e.target.value)}/>
           </div>
           <div className={'flex gap-[20px]'}>
-             <UiSelect label={'Укажите категорию'}
-                       values={[{id: 1, label: 'apple'}, {id: 2, label: 'banana'}, {id: 3, label: 'orange'}]}/>
-             <UiSelect label={'Выберите счет'}
-                       values={[{id: 1, label: 'Наличные'}, {id: 2, label: 'Альфа'}, {id: 3, label: 'Беларусбанк'}]}/>
+             <UiSelect
+                label={'Укажите категорию'}
+                options={[{id: 1, label: 'apple'}, {id: 2, label: 'banana'}, {id: 3, label: 'orange'}]}
+             />
+             <UiSelect
+                label={'Выберите счет'}
+                options={[{id: 1, label: 'Наличные'}, {id: 2, label: 'Альфа'}, {id: 3, label: 'Беларусьбанк'}]}
+             />
           </div>
           <UiTextarea label={'Описание'} placeholder={'Введите значение'} value={description} onChange={(e) => {
              setDescription(e.target.value)

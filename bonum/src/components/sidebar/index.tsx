@@ -1,12 +1,15 @@
-import { FC } from 'react'
+import {FC} from 'react'
 import logo from '../../assets/images/logo.svg'
 import {Link, useNavigate} from "react-router-dom";
 import {
    ChecklistOutlined, MailOutline, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined
 } from "@mui/icons-material";
+import {useUser} from "../../context/user.tsx";
 
 export const Sidebar: FC = () => {
+   const { user } = useUser();
    const navigate = useNavigate();
+
 
   return (
     <div className={'min-w-[255px] border-r border-brown3 h-screen flex flex-col sticky top-0'}>
@@ -28,10 +31,10 @@ export const Sidebar: FC = () => {
           </ul>
        </div>
        <div className={'p-3 mt-auto border-t border-brown3 flex items-center gap-[10px]'}>
-          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>IM</div>
+          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>{user.username.slice(0, 2).toUpperCase()}</div>
           <div>
-             <p className={'font-medium'}>Игорь Матюх</p>
-             <p className={'text-[12px]'}>igmat</p>
+             <p className={'font-medium'}>{user.name + ' ' + user.surname}</p>
+             <p className={'text-[12px]'}>{user.username}</p>
           </div>
        </div>
     </div>

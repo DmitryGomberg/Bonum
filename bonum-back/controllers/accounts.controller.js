@@ -2,11 +2,22 @@ const db = require('../db.js');
 
 class AccountsController {
     async getUserAccounts(req, res) {
-        const {user_id} = req.query;
-        console.log(user_id)
-        const accounts = await db.query('SELECT * FROM accounts WHERE user_id=$1', [user_id])
-        console.log(accounts)
-        res.json(accounts.rows)
+        const { user_id } = req.query;
+
+        if (!user_id) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        try {
+            const accounts = await db.query(
+                'SELECT * FROM accounts WHERE user_id = $1 ORDER BY id',
+                [user_id]
+            );
+            res.json(accounts.rows);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error fetching accounts' });
+        }
     }
     async addUserAccount(req, res) {
         const { name, value, currency_id, user_id } = req.body;
