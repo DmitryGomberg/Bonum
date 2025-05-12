@@ -59,7 +59,10 @@ export const HomeTransactions: FC = () => {
                      <span className="text-black flex-[1]">{transaction.date}</span>
                      <span className="text-black truncate flex-[1]">{transaction.description || ''}</span>
                      <span className="text-black flex-[1]"><span className={'px-2 py-1 border border-brown3 rounded-md leading-0 text-[11px] font-medium'}>{transaction.category_name || 'Не указана'}</span></span>
-                     <span className="text-black flex-[1]">{transaction.source_account_name}</span>
+                     <span className="text-black flex-[1]">
+                       {transaction.source_account_name}
+                       {transaction.destination_account_name && ` → ${transaction.destination_account_name}`}
+                     </span>
                      <span
                         className={`font-medium flex-[1] text-right ${
                            transaction.type_id === 1
@@ -74,12 +77,12 @@ export const HomeTransactions: FC = () => {
                   </div>
                ))
             ) : (
-               <>
+               <div className={'py-4'}>
                   <p className={'text-[14px] text-black text-center w-full'}>Транзакции не найдены</p>
                   <UiLink className={'text-center'} goto={'/createTransaction'}>
                      Создать первую транзакцию
                   </UiLink>
-               </>
+               </div>
             )}
          </div>
       </div>

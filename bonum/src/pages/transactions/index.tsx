@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useUserId } from "../../utils/auth.tsx";
-import { UiSelect } from "../../ui/select"; // Adjust the import path as needed
+import { UiSelect } from "../../ui/select";
+import {UiLink} from "../../ui/link";
 
 interface Transaction {
   id: number;
@@ -63,8 +64,8 @@ export const TransactionsPage: FC = () => {
 
   return (
      <div className="p-4">
-       <div className={'p-4 bg-white border border-brown3 rounded-md'}>
        <h1 className="text-xl font-bold mb-4">Транзакции</h1>
+       <div className={'p-4 bg-white border border-brown3 rounded-md'}>
          <div className="flex gap-4 mb-4">
            <UiSelect
               value={categories.indexOf(selectedCategory)} // Use indexOf to find the correct index
@@ -91,29 +92,36 @@ export const TransactionsPage: FC = () => {
              <span>Сумма</span>
              <span>Перевод на</span>
            </div>
-           {filteredTransactions.slice().reverse().map((transaction) => (
-              <div
-                 key={transaction.id}
-                 className="grid grid-cols-6 gap-4 p-2 border-t border-brown3 bg-brown1 text-sm"
-              >
-                <span>{transaction.date}</span>
-                <span>{transaction.description || ''}</span>
-                <span>{transaction.category_name || 'Не указана'}</span>
-                <span>{transaction.source_account_name}</span>
-                <span
-                   className={`font-medium ${
-                      transaction.type_id === 1
-                         ? 'text-green-500'
-                         : transaction.type_id === 2
-                            ? 'text-red-500'
-                            : 'text-black'
-                   }`}
-                >
+           {filteredTransactions.length > 0 ? filteredTransactions.slice().reverse().map((transaction) => (
+                 <div
+                    key={transaction.id}
+                    className="grid grid-cols-6 gap-4 p-2 border-t border-brown3 bg-brown1 text-sm"
+                 >
+                   <span>{transaction.date}</span>
+                   <span>{transaction.description || ''}</span>
+                   <span>{transaction.category_name || 'Не указана'}</span>
+                   <span>{transaction.source_account_name}</span>
+                   <span
+                      className={`font-medium ${
+                         transaction.type_id === 1
+                            ? 'text-green-500'
+                            : transaction.type_id === 2
+                               ? 'text-red-500'
+                               : 'text-black'
+                      }`}
+                   >
                 {transaction.sum} {transaction.currency_type}
               </span>
-                <span>{transaction.destination_account_name || '-'}</span>
+                   <span>{transaction.destination_account_name || '-'}</span>
+                 </div>
+              )) :
+              <div className={'py-4'}>
+                <p className={'text-[14px] text-black text-center w-full'}>Транзакции не найдены</p>
+                <UiLink className={'text-center'} goto={'/createTransaction'}>
+                  Создать первую транзакцию
+                </UiLink>
               </div>
-           ))}
+           }
          </div>
        </div>
      </div>

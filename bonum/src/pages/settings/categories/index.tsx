@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { SettingsCategory } from './item';
 import {UiButton} from "../../../ui/button";
 import {ModalCreateCategory} from "../../../components/modals/createCategory";
+import {Add} from "@mui/icons-material";
+import {useUserId} from "../../../utils/auth.tsx";
 
 type Category = {
    id: number;
@@ -15,10 +17,11 @@ export const SettingsCategories: FC = () => {
    const [categories, setCategories] = useState<Category[]>([]);
    const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
    const [activeModal, setActiveModal] = useState<boolean>(false);
+   const userId = useUserId();
 
    const fetchCategories = async () => {
       try {
-         const response = await fetch('http://localhost:8080/api/getAllCategories?user_id=1');
+         const response = await fetch(`http://localhost:8080/api/getAllCategories?user_id=${userId}`);
          const data = await response.json();
          const sortedCategories = sortCategories(data);
          setCategories(sortedCategories);
@@ -81,10 +84,10 @@ export const SettingsCategories: FC = () => {
                <p className={'font-medium text-[18px] text-center'}>
                   Категории записей пользователя
                </p>
-               <UiButton label={'Добавить'} onClick={()=> setActiveModal(true)} />
+               <UiButton label={'Добавить'} onClick={()=> setActiveModal(true)} contentLeft={<Add/>} />
             </div>
             <div className={'flex flex-col gap-[10px]'}>
-               {categories
+               {categories.length ? categories
                   .filter(isCategoryVisible)
                   .map((category) => (
                      <div key={category.id} style={{ marginLeft: `${category.level * 40}px` }}>
@@ -98,10 +101,18 @@ export const SettingsCategories: FC = () => {
                            hasChildren={hasChildren(category.id)}
                         />
                      </div>
-                  ))}
+                  )) : (
+                  <div className={'py-4 border border-brown3 px-8 rounded-xl'}>
+                     <p className={'text-[14px] text-black text-center w-full'}>Вы пока не добавили категории!</p>
+                     <div className={'text-brown5 text-[14px] font-medium cursor-pointer text-center'}
+                          onClick={()=> setActiveModal(true)}>
+                        Создать категорию
+                     </div>
+                  </div>
+               )}
             </div>
          </div>
-         <ModalCreateCategory active={activeModal} parentId={null} onClose={()=> setActiveModal(false)} />
+         <ModalCreateCategory active={activeModal} parentId={null} onClose={() => setActiveModal(false)}/>
       </div>
    );
 };

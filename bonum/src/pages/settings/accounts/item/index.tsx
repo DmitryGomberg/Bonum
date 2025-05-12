@@ -9,7 +9,6 @@ import {useNotifications} from "../../../../context/notifications.tsx";
 type ISettingsAccountProps = {
    id: number;
    name: string;
-   value: number;
    currency: number;
    onUpdate: () => void;
 }
@@ -65,7 +64,7 @@ export const SettingsAccount: FC<ISettingsAccountProps> = (props) => {
      <div>
        <div className={'flex items-center justify-between bg-white p-4 border border-brown3 rounded-xl'}>
           <p className={'font-bold flex-[10%]'}>{props.name}</p>
-          <p className={'font-bold grow'}>{props.value} {currencyName || 'Loading...'}</p>
+          <p className={'font-bold grow'}>{currencyName || 'Loading...'}</p>
           <div className={'flex gap-[10px]'}>
              <EditOutlined className={'cursor-pointer transition hover:text-brown4'} onClick={()=>setActiveModalEdit(true)} />
              <DeleteOutlined className={'cursor-pointer transition hover:text-red'} onClick={()=> setActiveModalDelete(true)} />

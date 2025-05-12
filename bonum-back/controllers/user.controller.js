@@ -100,6 +100,44 @@ class UserController {
                 [email, hashedPassword, email]
             );
 
+            const userId = newPerson.rows[0].id;
+
+            // Define parent categories
+            const parentCategories = [
+                { name: 'Еда' },
+                { name: 'Транспорт' },
+                { name: 'Доход' },
+            ];
+
+            // Insert parent categories and store their IDs
+            const parentCategoryIds = {};
+            for (const category of parentCategories) {
+                const insertedCategory = await db.query(
+                    'INSERT INTO categories (name, user_id, parent_id) VALUES ($1, $2, $3) RETURNING id',
+                    [category.name, userId, null]
+                );
+                parentCategoryIds[category.name] = insertedCategory.rows[0].id;
+            }
+
+            // Define child categories with their parent names
+            const childCategories = [
+                { name: 'Продукты', parent_name: 'Еда' },
+                { name: 'Рестораны', parent_name: 'Еда' },
+                { name: 'Мойка', parent_name: 'Транспорт' },
+                { name: 'Заправка', parent_name: 'Транспорт' },
+                { name: 'Зарплата', parent_name: 'Доход' },
+                { name: 'Алименты', parent_name: 'Доход' },
+            ];
+
+            // Insert child categories using parent IDs
+            for (const category of childCategories) {
+                const parentId = parentCategoryIds[category.parent_name];
+                await db.query(
+                    'INSERT INTO categories (name, user_id, parent_id) VALUES ($1, $2, $3)',
+                    [category.name, userId, parentId]
+                );
+            }
+
             const accessToken = jwt.sign({ email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
             const refreshToken = jwt.sign({ email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
             refreshTokens.push(refreshToken);

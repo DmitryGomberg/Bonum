@@ -33,7 +33,7 @@ export const Sidebar: FC = () => {
        <div className={'p-3 mt-auto border-t border-brown3 flex items-center gap-[10px]'}>
           <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>{user.username ? user.username.slice(0, 2).toUpperCase() : ''}</div>
           <div>
-             <p className={'font-medium'}>{user.name + ' ' + user.surname}</p>
+             <p className={'font-medium'}>{user.name || user.surname ? user.name + ' ' + user.surname : ''}</p>
              <p className={'text-[12px]'}>{user.username}</p>
           </div>
        </div>

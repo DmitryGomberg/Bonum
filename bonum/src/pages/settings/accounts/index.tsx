@@ -43,7 +43,6 @@ export const SettingsAccounts: FC = () => {
          const transformedAccounts: Account[] = data.map((account: ServerAccount) => ({
             id: account.id,
             name: account.name,
-            value: account.value,
             currency: account.currency_id,
          }));
 
@@ -68,17 +67,26 @@ export const SettingsAccounts: FC = () => {
    if (error) return <div>Error: {error}</div>;
    
   return (
-     <div className={'flex flex-col gap-3'}>
-        <h2 className={'font-medium text-[18px] text-center'}>
-           Счета пользователя
-        </h2>
-        <div className={'max-w-[800px] mx-auto w-full flex flex-col gap-[10px]'}>
-           {accounts.map((account) => (
-              <SettingsAccount value={account.value} currency={account.currency} name={account.name} id={account.id}
-                               onUpdate={fetchAccounts}/>
-           ))}
+     <div className={'flex flex-col gap-3 max-w-[800px] mx-auto w-full'}>
+        <div className={'flex items-center justify-between'}>
+           <p className={'font-medium text-[18px] text-center'}>
+              Счета пользователя
+           </p>
            <UiButton label={'Добавить'} contentLeft={<Add/>} onClick={() => setActiveModal(true)}
                      className={'self-end'}/>
+        </div>
+        <div className={'flex flex-col gap-[10px]'}>
+           {accounts.length ? (accounts.map((account) => (
+              <SettingsAccount currency={account.currency} name={account.name} id={account.id}
+                               onUpdate={fetchAccounts}/>
+           ))) : (
+              <div className={'py-4 border border-brown3 px-8 rounded-xl'}>
+                 <p className={'text-[14px] text-black text-center w-full'}>Вы пока не создали счет!</p>
+                 <div className={'text-brown5 text-[14px] font-medium cursor-pointer text-center'} onClick={() => setActiveModal(true)}>
+                    Создать счет
+                 </div>
+              </div>
+           )}
         </div>
         <ModalCreateAccount active={activeModal} onClose={() => setActiveModal(false)}/>
      </div>

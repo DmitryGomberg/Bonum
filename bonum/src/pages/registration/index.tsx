@@ -9,18 +9,20 @@ import logo from '../../assets/images/logo.svg'
 import { UiInputPassword } from '../../ui/inputPassword'
 
 export const RegisterPage: FC = () => {
-   const navigate = useNavigate()
-   const {showNotification} = useNotifications()
-   const { login } = useAuth();
    const [email, setEmail] = useState('')
    const [error, setError] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
 
+   const navigate = useNavigate()
+   const {showNotification} = useNotifications()
+   const { login } = useAuth();
+
    const handleRegister = async () => {
       if (!validateFields()){
          return
       }
+      console.log('validatoin success')
       try {
          const response = await fetch('http://localhost:8080/api/register', {
             method: 'POST',
@@ -28,8 +30,8 @@ export const RegisterPage: FC = () => {
             body: JSON.stringify({ email, password }),
          })
          if (response.ok) {
-            const data = await response.json();
-            login(data.accessToken);
+            // const data = await response.json();
+            login();
             showNotification('Пользователь успешно зарегистрирован', 'success');
             navigate('/login')
          } else {

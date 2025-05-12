@@ -37,7 +37,7 @@ export const AddTransactionPage: FC = () => {
    useEffect(() => {
       const fetchCategories = async () => {
          try {
-            const response = await fetch('http://localhost:8080/api/getAllCategories?user_id=1');
+            const response = await fetch(`http://localhost:8080/api/getAllCategories?user_id=${userId}`);
             const data = await response.json();
             const options = data.map((category: Category) => ({
                id: category.id,
@@ -51,7 +51,7 @@ export const AddTransactionPage: FC = () => {
 
       const fetchAccounts = async () => {
          try {
-            const response = await fetch('http://localhost:8080/api/accounts?user_id=1');
+            const response = await fetch(`http://localhost:8080/api/accounts?user_id=${userId}`);
             const data = await response.json();
             const options = data.map((account: Account) => ({
                id: account.id,
@@ -77,11 +77,11 @@ export const AddTransactionPage: FC = () => {
             showNotification('Укажите дату', 'error');
             return;
          }
-         if (!selectedCategory && type !== 3) {
+         if (!selectedCategory && type !== 3 || selectedCategory && selectedCategory === -2) {
             showNotification('Укажите категорию', 'error');
             return;
          }
-         if (!selectedAccount) {
+         if (!selectedAccount || selectedAccount && selectedAccount === -2) {
             showNotification('Укажите счет списания', 'error');
             return;
          }
@@ -146,7 +146,7 @@ export const AddTransactionPage: FC = () => {
                   <UiSelect
                      label={'Выберите категорию'}
                      placeholder={'Выберите категорию'}
-                     options={categories}
+                     options={categories.length ? categories : [{ id: -2, label: 'Нет категорий' }]}
                      value={selectedCategory}
                      onChange={(selected: Option | null) => setSelectedCategory(selected ? selected.id : null)}
                   />
@@ -156,7 +156,7 @@ export const AddTransactionPage: FC = () => {
                      <UiSelect
                         label={'Откуда'}
                         placeholder={'Выберите счет'}
-                        options={accounts}
+                        options={accounts.length ? accounts : [{ id: -2, label: 'Нет счетов' }]}
                         value={selectedAccount}
                         onChange={(selected: Option | null) => setSelectedAccount(selected ? selected.id : null)}
                      />
@@ -174,7 +174,7 @@ export const AddTransactionPage: FC = () => {
                   <UiSelect
                      label={'Выберите счет'}
                      placeholder={'Выберите счет'}
-                     options={accounts}
+                     options={accounts.length ? accounts : [{ id: -2, label: 'Нет счетов' }]}
                      value={selectedAccount}
                      onChange={(selected: Option | null) => setSelectedAccount(selected ? selected.id : null)}
                   />
