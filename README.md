@@ -1,18 +1,17 @@
 # Bonum - приложенеие финансового учета
 
 ## Description
-Проект был реализован в рамках студенческой работы. Цел
+Проект был реализован в рамках студенческой работы. Разработка решает вопросы по ведению финансового учета и ведению аналитики потока денежных стредсв.
 
 ## Tech Stack
 The project uses the following technologies:
-- **Languages**: TypeScript, JavaScript
+- **Languages**: ReactJS, Typescript, TailwindCSS, NodeJS+Express
 - **Frameworks/Libraries**: React
 - **Package Manager**: npm
 - **Backend**: Node.js with PostgreSQL
 - **Authentication**: JWT (JSON Web Tokens)
 - **Password Hashing**: bcrypt
 - **Database**: PostgreSQL
-- **IDE**: WebStorm
 
 ## Features
 - User registration and authentication
