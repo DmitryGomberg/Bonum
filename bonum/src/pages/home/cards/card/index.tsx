@@ -5,7 +5,7 @@ type IHomeCardProps = {
   icon: ReactNode;
   name: string;
   sum: string;
-  onClick(): void;
+  navigateTo: string;
 }
 
 export const HomeCard: FC<IHomeCardProps> = (props) => {
@@ -18,8 +18,8 @@ export const HomeCard: FC<IHomeCardProps> = (props) => {
            <span className={'font-medium'}>{props.sum}</span>
          </div>
        </div>
-       <div className={'bg-brown2 p-3 cursor-pointer'} onClick={props.onClick}>
-          <UiLink>
+       <div className={'bg-brown2 p-3 cursor-pointer'}>
+          <UiLink goto={`/${props.navigateTo}`}>
             Показать все
           </UiLink>
        </div>

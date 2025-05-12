@@ -2,7 +2,7 @@ import {FC} from 'react'
 import logo from '../../assets/images/logo.svg'
 import {Link, useNavigate} from "react-router-dom";
 import {
-   ChecklistOutlined, MailOutline, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined
+   ChecklistOutlined, ReceiptOutlined, SettingsOutlined, SpaceDashboardOutlined
 } from "@mui/icons-material";
 import {useUser} from "../../context/user.tsx";
 
@@ -21,8 +21,8 @@ export const Sidebar: FC = () => {
           <ul>
              <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/home"} className={'flex gap-[10px] w-full p-2'}><SpaceDashboardOutlined />Панель управления</Link></li>
              <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/accounts"} className={'flex gap-[10px] w-full p-2'}><ChecklistOutlined />Счета</Link></li>
-             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><ReceiptOutlined />Транзакции</Link></li>
-             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><MailOutline />Отчеты</Link></li>
+             <li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/transactions"} className={'flex gap-[10px] w-full p-2'}><ReceiptOutlined />Транзакции</Link></li>
+             {/*<li className={'flex gap-[10px] rounded-md hover:bg-brown2 transition cursor-pointer'}><Link to={"/"} className={'flex gap-[10px] w-full p-2'}><MailOutline />Отчеты</Link></li>*/}
           </ul>
        </div>
        <div className={'p-3 border-t border-brown3'}>
@@ -31,7 +31,7 @@ export const Sidebar: FC = () => {
           </ul>
        </div>
        <div className={'p-3 mt-auto border-t border-brown3 flex items-center gap-[10px]'}>
-          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>{user.username.slice(0, 2).toUpperCase()}</div>
+          <div className={'w-[40px] h-[40px] rounded-[50%] bg-brown5 flex items-center justify-center text-white'}>{user.username ? user.username.slice(0, 2).toUpperCase() : ''}</div>
           <div>
              <p className={'font-medium'}>{user.name + ' ' + user.surname}</p>
              <p className={'text-[12px]'}>{user.username}</p>

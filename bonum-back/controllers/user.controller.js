@@ -13,9 +13,27 @@ class UserController {
     }
 
     async getOneUser(req, res) {
-        const id = req.params.id;
-        const user = await db.query('SELECT * FROM users WHERE id=$1', [id])
-        res.json(user.rows[0])
+        try {
+            const { id } = req.params;
+
+            if (!id) {
+                return res.status(400).json({ message: 'User ID is required' });
+            }
+
+            const user = await db.query(
+                `SELECT * FROM users WHERE id = $1`,
+                [parseInt(id, 10)]
+            );
+
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.json(user.rows[0]);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error fetching user' });
+        }
     }
 
     async updateUser(req, res) {
@@ -78,8 +96,8 @@ class UserController {
 
             const hashedPassword = await bcrypt.hash(password, 10);
             const newPerson = await db.query(
-                'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-                [email, hashedPassword]
+                'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING *',
+                [email, hashedPassword, email]
             );
 
             const accessToken = jwt.sign({ email }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });

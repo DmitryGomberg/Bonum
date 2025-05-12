@@ -11,6 +11,7 @@ import {AddTransactionPage} from "./pages/addTransaction";
 import {AccountsPage} from "./pages/accounts";
 import {SettingsPage} from "./pages/settings";
 import {UserProvider} from "./context/user.tsx";
+import {TransactionsPage} from "./pages/transactions";
 
 const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
    const { isAuthenticated } = useAuth();
@@ -57,6 +58,14 @@ const App: React.FC = () => {
                         element={
                            <ProtectedRoute>
                               <SettingsPage />
+                           </ProtectedRoute>
+                        }
+                     />
+                     <Route
+                        path="/transactions"
+                        element={
+                           <ProtectedRoute>
+                              <TransactionsPage />
                            </ProtectedRoute>
                         }
                      />

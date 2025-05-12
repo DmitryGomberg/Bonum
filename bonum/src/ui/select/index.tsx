@@ -8,6 +8,7 @@ interface Option {
 
 interface SelectProps {
    options: Option[];
+   value: number | null;
    placeholder?: string;
    onChange: (selected: Option | null) => void;
    className?: string;
@@ -19,26 +20,9 @@ interface SelectProps {
 
 export const UiSelect: React.FC<SelectProps> = (props) => {
    const [isOpen, setIsOpen] = useState(false);
-   const [selectedOption, setSelectedOption] = useState<Option | null>(() => {
-      if (props.defaultId !== undefined) {
-         return props.options.find((option) => option.id === props.defaultId) || null;
-      }
-      return null;
-   });
+   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
    const selectRef = useRef<HTMLDivElement>(null);
 
-   // Закрытие при клике вне компонента
-   useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-         if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-            setIsOpen(false);
-         }
-      };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-   }, []);
-
-   // Обновление выбранной опции, если defaultId или options изменились
    useEffect(() => {
       if (props.defaultId !== undefined) {
          const newSelected = props.options.find((option) => option.id === props.defaultId) || null;
@@ -59,25 +43,25 @@ export const UiSelect: React.FC<SelectProps> = (props) => {
             <span className={'text-red'}>*</span> : ''}</label>
          }
          <div className={'relative'}>
-            <div
+            <button
                className="outline-brown4 select-none flex items-center gap-[15px] justify-between cursor-pointer bg-brown1 border border-brown3 rounded-md px-[12px] py-[8px] text-[14px] text-black font-normal w-full"
                onClick={() => setIsOpen(!isOpen)}
             >
-              <div className={`flex w-full item-center justify-between text-black`}>
-                {selectedOption ? selectedOption.label : props.placeholder}
-                <span className={`${isOpen ? 'rotate-[180deg]' : ''} transition`}><ArrowDropDown/></span>
-              </div>
-            </div>
+               <div className={`flex w-full item-center justify-between text-black`}>
+                  {selectedOption ? selectedOption.label : props.placeholder}
+                  <span className={`${isOpen ? 'rotate-[180deg]' : ''} transition`}><ArrowDropDown/></span>
+               </div>
+            </button>
             {isOpen && (
-               <ul className="z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg">
+               <ul className="z-10 absolute top-[100%] right-0 w-full flex flex-col bg-brown1 border border-brown3 rounded-md shadow-lg max-h-[200px] overflow-y-auto">
                   {props.options.map((option) => (
-                     <li
+                     <button
                         key={option.id}
-                        className="outline-brown4 z-20 cursor-pointer py-1 hover:bg-brown2 transition px-[12px] py-[8px] text-left"
+                        className="outline-brown4 z-20 cursor-pointer py-1 hover:bg-brown2 transition px-[12px] text-[14px] text-left"
                         onClick={() => handleOptionClick(option)}
                      >
                         {option.label}
-                     </li>
+                     </button>
                   ))}
                </ul>
             )}

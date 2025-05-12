@@ -37,7 +37,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
       };
 
       fetchUserData();
-   }, []);
+   }, [userID]);
 
    return (
       <UserContext.Provider value={{ user, setUser }}>
@@ -52,4 +52,5 @@ export const useUser = (): UserContextProps => {
       throw new Error('useUser must be used within a UserProvider');
    }
    return context;
+
 };
