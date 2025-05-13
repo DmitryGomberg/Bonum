@@ -5,7 +5,7 @@
 
 ## Технический стек
 В проекте используются следующие технологии:
-- **- **Языки**: ReactJS, Typescript, Tailwind CSS, NodeJS+Express
+- **Языки**: ReactJS, Typescript, Tailwind CSS, NodeJS+Express
 - **Фреймворки/библиотеки**: React
 - **Менеджер пакетов**: npm
 - **Серверная часть**: Node.js с PostgreSQL
