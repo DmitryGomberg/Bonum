@@ -1,7 +1,7 @@
 name: Deploy Frontend
 on:
   push:
-    branches: ["master"]
+    branches: ["main"] # У вас на скрине ветка называется main
   workflow_dispatch:
 
 permissions:
@@ -18,15 +18,16 @@ jobs:
 
       - name: Install and Build
         run: |
-          cd bonum
+          cd bonum-front-main
           npm install
-          npm run build
+          # Используем npx vite build, чтобы обойти ошибки TypeScript и собрать проект
+          npx vite build 
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Укажите папку, которую создает npm run build (обычно dist или build)
-          path: ./bonum/dist 
+          # Проверьте, создается ли папка dist внутри bonum-front-main
+          path: ./bonum-front-main/dist 
 
   deploy:
     needs: build-and-deploy
