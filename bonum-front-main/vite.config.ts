@@ -7,7 +7,7 @@ export default defineConfig({
       react(),
       tailwindcss()
   ],
-   base: '/bonum-front/',
+   base: '/Bonum/',
    resolve: {
      alias: {
      }
